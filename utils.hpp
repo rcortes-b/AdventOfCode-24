@@ -10,6 +10,9 @@
 typedef std::vector<int> int_vec;
 typedef std::vector<int>::iterator it_intvec;
 
+typedef std::vector<long long int> llint_vec;
+typedef std::vector<long long int>::iterator it_llintvec;
+
 class ThrowError : public std::exception {
 	private:
 			std::string	_err_msg;
