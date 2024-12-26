@@ -1,0 +1,92 @@
+#include "../../utils.hpp"
+
+#define ROBOT_AMOUNT 500
+#define	WIDE_SIZE 101
+#define TALL_SIZE 103
+#define TOTAL_SECONDS 100
+
+typedef struct s_arcade
+{
+	int	long long	xa;
+	int	long long	xb;
+	int	long long	ya;
+	int	long long	yb;
+	int	long long	xp;
+	int	long long	yp;
+}				t_arcade;
+
+std::vector<t_arcade>	arcade;
+
+static void	get_nums(std::string &line, int long long &x, int long long &y)
+{
+	auto i = 0;
+
+	i = line.find("X", i) + 2;
+	x = std::atoll(&line[i]);
+	i = line.find("Y", i) + 2;
+	y = std::atoll(&line[i]);
+}
+
+static void	parse_claw_machines(char *file)
+{
+	std::fstream	f;
+	f.open(file);
+	if (!f)
+		throw ThrowError("Failed accessing the input");
+	std::string	line = "";
+	auto		counter = 0;
+	t_arcade	clawmachine;
+	while (std::getline(f, line)) {
+		if (line.empty()) {
+			arcade.push_back(clawmachine);
+			continue ;
+		}
+		if (line.substr(0, 8) == "Button A")
+			get_nums(line, clawmachine.xa, clawmachine.ya);
+		else if (line.substr(0, 8) == "Button B")
+			get_nums(line, clawmachine.xb, clawmachine.yb);
+		else {
+			get_nums(line, clawmachine.xp, clawmachine.yp);
+			clawmachine.xp += 10000000000000;
+			clawmachine.yp += 10000000000000;
+		}
+	}
+	arcade.push_back(clawmachine);
+}
+
+static int long long	get_single_machine_prize(t_arcade &clawmachine)
+{
+	auto 	value = clawmachine.ya * clawmachine.xb;
+	auto	value2 = clawmachine.xa * clawmachine.yb;
+	auto	prize_updated = clawmachine.ya * clawmachine.xp;
+	auto	prize_updated2 = clawmachine.xa * clawmachine.yp;
+	auto	nb = (prize_updated2 - prize_updated) / (value2 - value);
+	auto	na = (clawmachine.xp - (clawmachine.xb * nb)) / clawmachine.xa;
+
+	if (((clawmachine.xb * nb) + (clawmachine.xa * na)) != clawmachine.xp)
+		return 0;
+	else if (((clawmachine.yb * nb) + (clawmachine.ya * na)) != clawmachine.yp)
+		return 0;
+	return ((na * 3) + nb);
+}
+
+int main(int argc, char **argv)
+{
+	try {
+		if (argc == 1)
+			throw ThrowError("Not input provided");
+		else if (argc > 2)
+			throw ThrowError("You can provide only one input");
+
+		parse_claw_machines(argv[1]);
+		int long long	tokens = 0;
+		for (auto &a : arcade) {
+			tokens += get_single_machine_prize(a);
+		}
+		std::cout << "The fewest amount of tokens to get all the possible prizes is " << tokens << std::endl;		
+	}
+	catch (const std::exception& e) {
+		std::cerr << e.what() << std::endl;
+	}
+	return 0;
+}
