@@ -5,13 +5,6 @@ How to run the program:
 	- c++ src_file.cpp -o <executable name>
 	./<executable name> <input>
 
-	255 too low - 4479 too high, 3820 no es, 2313 no es, 1899 no es
 
-	1 4 8 14
-
-	1 5 9 15
-	4 5 12 18
-	8 9 12 22
-	14 15 18 22
-
-	89403351449 too low 
+Day 09/01/2025 note:
+	- I'm giving up AoC '24 because the amount of time that i can use is limited. If i keep doing it i'll be stucked for all the month (January) and i want to be focused in learning new stuff doing side projects.
