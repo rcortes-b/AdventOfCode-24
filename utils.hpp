@@ -6,6 +6,8 @@
 #include <algorithm>
 #include <vector>
 #include <map>
+#include <queue>
+#include <cstring>
 
 typedef std::vector<int> int_vec;
 typedef std::vector<int>::iterator it_intvec;
